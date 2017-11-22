@@ -1,6 +1,7 @@
 package dataaccess;
 
 import model.Country;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Yasi on 11/16/2017.
  */
 public class CountryDao {
-//    final static Logger logger = Logger.getLogger(CountryDao.class);
+    final static Logger logger = Logger.getLogger(CountryDao.class);
     public void add(Country country){}
     public void update(Country country){}
     private Query createFindQuery(Object sample , Session session){
@@ -25,7 +26,6 @@ public class CountryDao {
         StringBuilder queryString = new StringBuilder("from "+aClass.getName() +" d ");
         for (Field field : declaredFields) {
             try {
-
                 field.setAccessible(true);
                 Object value = field.get(sample);
                 if(!ValueUtil.IsDefault(value) && !(field.getName().equals("id") && value.toString().equals("0")))
@@ -34,18 +34,13 @@ public class CountryDao {
                 continue;
             }
         }
-        /*if (constrains.size() == 1){
-            String name = constrains.get(0).getName();
-            queryString.append(" Where ");
-            queryString.append( "d.").append(name).append(" like ").append(name).append('%');
-        }
-        else */
-            if(constrains.size() > 0){
+        if(constrains.size() > 0){
             queryString.append(" Where 1= 1 ");
             for (Field constrain : constrains) {
                 String name = constrain.getName();
                 queryString.append( " and d.").append(name).append(" =:").append(name);
             }
+            queryString.append(" order by d.").append(constrains.get(0).getName());
         }
         Query query = session.createQuery(queryString.toString());
         try {
@@ -62,6 +57,7 @@ public class CountryDao {
     }
 
     public Collection<Country> Find(Country country){
+        logger.debug(":: START Find ::");
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
@@ -69,7 +65,7 @@ public class CountryDao {
             return query.list();
         } catch (HibernateException e) {
             if (transaction != null) transaction.rollback();
-//            logger.error(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }catch (Exception e){
             e.printStackTrace();
@@ -81,6 +77,7 @@ public class CountryDao {
     }
 
     public List<Object> getAirportsCount(){
+        logger.debug(":: START getAirportsCount() ::");
         String queryStr = "SELECT co.name, COUNT(*) as airport_count " +
                 "FROM Country co JOIN co.airports airport " +
                 "group by co.name " +
@@ -89,18 +86,21 @@ public class CountryDao {
     }
 
     public List<Object> countriesRunwaysType(){
+        logger.debug(":: START countriesRunwaysType() ::");
         String queryStr = "SELECT distinct co.name as name, run.surface as type FROM Country co Join co.airports as airport Join airport.runways as run " +
                 "  order by name";
         return load(queryStr);
     }
 
     public List<Object> commonRunwaysLeIdent(){
+        logger.debug(":: START commonRunwaysLeIdent() ::");
         String queryStr = "SELECT run.leIdent, COUNT(run.leIdent) As leCount FROM Runway AS run " +
                 "GROUP BY run.leIdent order by leCount";
         return load(queryStr);
     }
 
     private List<Object> load(String queryStr){
+        logger.debug(":: START load ::");
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Query query = session.createQuery(queryStr);

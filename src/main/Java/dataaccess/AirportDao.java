@@ -10,6 +10,4 @@ import java.util.Collection;
 public class AirportDao {
     public void add(Airport airport){}
     public void update(Airport airport){}
-
-//    public Collection<Airport> Fin
 }

@@ -16,15 +16,22 @@ public class CountryView implements Serializable{
     public CountryView(Country country){
         this.name =  country.getName();
         this.code = country.getCode();
-        airports = new ArrayList<AirportView>();
+        airportViews = new ArrayList<AirportView>();
         Set<Airport> airports = country.getAirports();
         for (Airport airport : airports) {
-            this.airports.add(new AirportView(airport));
+            this.airportViews.add(new AirportView(airport));
         }
     }
+
+    public CountryView(String name, String code){
+        this.name =  name;
+        this.code = code;
+        airportViews = new ArrayList<AirportView>();
+    }
+
     private String name;
     private String code;
-    private List<AirportView> airports;
+    private List<AirportView> airportViews;
 
     public String getName() {
         return name;
@@ -34,15 +41,19 @@ public class CountryView implements Serializable{
         this.name = name;
     }
 
-    public List<AirportView> getAirports() {
-        return airports;
+    public List<AirportView> getAirportViews() {
+        return airportViews;
     }
 
-    public void setAirports(List<AirportView> airports) {
-        this.airports = airports;
+    public void setAirportViews(List<AirportView> airportViews) {
+        this.airportViews = airportViews;
     }
 
     public String getCode() {
         return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

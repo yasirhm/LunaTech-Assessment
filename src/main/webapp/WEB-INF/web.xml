@@ -11,15 +11,13 @@
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
 
   <servlet>
-  <servlet-name>SearchCountry</servlet-name>
-  <servlet-class>presentation.SearchCountryServlet</servlet-class>
-</servlet>
+    <display-name>SearchCountry</display-name>
+    <servlet-name>SearchCountry</servlet-name>
+    <servlet-class>presentation.SearchCountryServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>SearchCountry</servlet-name>
     <url-pattern>/countrySearch</url-pattern>

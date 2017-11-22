@@ -1,5 +1,7 @@
 package presentation;
 
+import manager.ExceptionHandler;
+
 import java.util.*;
 
 /**
@@ -41,10 +43,11 @@ public class ReportView {
         }
     }
 
-    List<Object> countriesWithMaxAirports;
-    List<Object> countriesWithMinAirports;
-    Map<String,List> runwaysTypeByCountry;
-    List<Object> commonRunwaysLeIdent;
+    private List<Object> countriesWithMaxAirports;
+    private List<Object> countriesWithMinAirports;
+    private Map<String,List> runwaysTypeByCountry;
+    private List<Object> commonRunwaysLeIdent;
+    private String errorMessage = "This report cannot be found.";
 
     public List<Object> getCountriesWithMaxAirports() {
         return countriesWithMaxAirports;
@@ -60,5 +63,9 @@ public class ReportView {
 
     public List<Object> getCommonRunwaysLeIdent() {
         return commonRunwaysLeIdent;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }
