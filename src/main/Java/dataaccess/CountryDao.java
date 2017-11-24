@@ -78,10 +78,12 @@ public class CountryDao {
 
     public List<Object> getAirportsCount(){
         logger.debug(":: START getAirportsCount() ::");
+
         String queryStr = "SELECT co.name, COUNT(*) as airport_count " +
-                "FROM Country co JOIN co.airports airport " +
+                "FROM Country co Left JOIN co.airports airport " +
                 "group by co.name " +
                 "order by 2";
+
         return load(queryStr);
     }
 
